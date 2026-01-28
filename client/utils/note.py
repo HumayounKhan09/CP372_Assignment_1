@@ -1,4 +1,4 @@
-from coordinates import coordinates
+from client.utils.coordinates import coordinates
 class note:
     def __init__(self,colour: str, message: str, is_pinned: bool):
         self.colour = colour
