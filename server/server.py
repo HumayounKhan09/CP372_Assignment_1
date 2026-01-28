@@ -16,7 +16,7 @@ DEF_COLOUR_SCHEME = 'gold purple'
 
 
 
-def server_ops(client_socket: socket.socket, client_address: tuple, ) -> None:
+def server_ops(client_socket: socket.socket, client_address: tuple, board_width: int, board_height:int, note_width:int, note_height: int, colours:str) -> None:
     client_ip, client_port = client_address
     #When a client first connects, send handshake data:
 
@@ -35,7 +35,7 @@ def main(host: str,port:int, board_width: int, board_height:int, note_width:int,
         while True:
             try:
                 client_socket, client_address = server_socket.accept()
-                start_new_thread(server_ops, (client_socket,client_address))
+                start_new_thread (server_ops, (client_socket,client_address,board_width,board_height,note_width,note_height,colours))
 
             except:
                 break
