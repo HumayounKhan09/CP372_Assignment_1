@@ -14,6 +14,10 @@ class Note(Button):
         super().__init__(P1, P2, message, win)
         self.setButtonFill(colour)
 
+    """
+    Server Implementation
+    """
+
     def pin(self, p: Pin):
         self.pins.append(p)
         self.pinned = True
