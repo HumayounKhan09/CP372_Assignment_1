@@ -7,6 +7,7 @@ import socket
 from _thread import start_new_thread
 import argparse
 import sys
+import json
 
 DEF_HOST = ''
 DEF_PORT = 9000
@@ -16,9 +17,18 @@ DEF_COLOUR_SCHEME = 'gold purple'
 
 
 
+
 def server_ops(client_socket: socket.socket, client_address: tuple, board_width: int, board_height:int, note_width:int, note_height: int, colours:str) -> None:
     client_ip, client_port = client_address
     #When a client first connects, send handshake data:
+    #handshake data set up when the server initializes. 
+    data_to_send = [board_width,board_height,note_height,note_width,colours]
+    message = json.dumps(data_to_send).encode('uft-8')
+    client_socket.sendall(message)
+
+    
+    
+            
 
 def main(host: str,port:int, board_width: int, board_height:int, note_width:int, note_height: int, colours:str):
     #Setting up the server: 
