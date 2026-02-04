@@ -1,6 +1,6 @@
 
 from client.utils.coordinates import coordinates
-from graphics import *
+from client.graphics import *
 
 
 class Pin(Circle):
