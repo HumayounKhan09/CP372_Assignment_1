@@ -23,7 +23,7 @@ def server_ops(client_socket: socket.socket, client_address: tuple, board_width:
     #When a client first connects, send handshake data:
     #handshake data set up when the server initializes. 
     data_to_send = [board_width,board_height,note_height,note_width,colours]
-    message = json.dumps(data_to_send).encode('uft-8')
+    message = json.dumps(data_to_send).encode('utf-8') 
     client_socket.sendall(message)
 
     
@@ -76,7 +76,7 @@ if __name__ == '__main__':
     parser.add_argument("colours", nargs = "+")
 
     args = parser.parse_args()
-    main(args.host, args.port,args.board_height, args.board_width, args.note_width, args.note_height, args.colours)
+    main(args.host, args.port, args.board_height, args.board_width, args.note_width, args.note_height, args.colours)
 
 
 #Need to add POST, SHAKE, PIN, UNPIN, DISCONNECT, CLEAR, GET

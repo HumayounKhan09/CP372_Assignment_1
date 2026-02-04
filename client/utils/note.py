@@ -1,5 +1,5 @@
 from client.utils.coordinates import coordinates
-from graphics import *
+from client.graphics import *
 from pins import Pin
 from typing import List
 # GUI
