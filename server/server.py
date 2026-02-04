@@ -73,14 +73,16 @@ if __name__ == '__main__':
     #note height
     parser.add_argument("note_height", type= int)
     #colours
-    parser.add_argument("colours", type = str)
+    parser.add_argument("colours", nargs = "+")
 
     args = parser.parse_args()
     main(args.host, args.port, args.board_height, args.board_width, args.note_width, args.note_height, args.colours)
 
 
+#Need to add POST, SHAKE, PIN, UNPIN, DISCONNECT, CLEAR, GET
+#How would these be implemented on the server side? 
 
-    
+
 
 
  
