@@ -6,7 +6,7 @@ from typing import List
 
 
 class Note(Button):
-    def __init__(self, colour: str, message: str, is_pinned: bool, P1: Point, P2: Point, win: GraphWin):
+    def __init__(self, colour: str, message: str, is_pinned: bool, P1: Point, P2: Point, win: GraphWin, id: str):
         self.colour = colour
         self.message = message
         self.pinned = is_pinned
