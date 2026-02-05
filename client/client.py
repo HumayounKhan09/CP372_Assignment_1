@@ -13,6 +13,7 @@ UI_STEP = 60
 
 def start_client(host, port):
     client = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+    # ? Does this need to be a queue?
     notes = []
     # Connect to the server
     client.connect((host, port))
@@ -75,19 +76,27 @@ def start_client(host, port):
             pass
         elif (disconnectButton.clicked(x)):
             client.sendall('DISCONNECT'.encode('utf-8'))
-            # Safe exit, need to make sure we close the thread !
+            #! Safe exit, need to make sure we close the thread !
             pass
         elif toggleButton.clicked(x):
             mode = "PIN" if mode == "NOTE" else "NOTE"
             toggleButton.setText(f"Mode: {mode}")
-            continue  # skip other actions for this click
+            continue
         else:
             if (mode == "NOTE"):
                 # Create a new note
                 x_position, y_position = x.getX(), x.getY()
+                #! will have to enter through the terminal.
                 text = input("Enter note text: ")
+
+                # TODO: Needs to be verified somewhere.
+                # TODO: pretty simple if (color not in coloursArray)
                 colour = input("Enter a colour: ")
 
+                # TODO: Verify overlap, complete overlap xOfSomeExistingNote=newX and
+                # TODO: yOfSomeExistingNote=newY but should this be defined server side?
+
+                # ? This is subject to change.
                 cmd = f'POST {x_position} {y_position} {colour} {text}'
 
                 client.sendall(cmd.encode('utf-8'))
