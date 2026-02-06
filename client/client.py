@@ -3,12 +3,57 @@ import socket
 from graphics import *
 import argparse
 from queue import Queue
-from note import Note
+from typing import List
+
+
+class Pin(Circle):
+    def __init__(self, center: Point, radius: int):
+        super().__init__(center, radius)
+
+
+class Note(Button):
+    def __init__(self, colour: str, message: str, is_pinned: bool, P1: Point, P2: Point, win: GraphWin, id: str):
+        self.colour = colour
+        self.message = message
+        self.pinned = is_pinned
+        self.pins: List[Pin] = []
+        super().__init__(P1, P2, message, win)
+        self.setButtonFill(colour)
+
+    """
+    Server Implementation
+    """
+
+    def pin(self, p: Pin):
+        self.pins.append(p)
+        self.pinned = True
+        return
+
+    def unpin(self, p: Pin):
+        if (len(self.pins) == 0):
+            return
+        if p in self.pins:
+            self.pins.remove(p)
+            p.undraw()
+
+        if (len(self.pins) == 0):
+            self.pinned = False
+            self.undraw()
+
 
 DEF_HOST = '127.0.0.1'
 DEF_PORT = 9000
 BUFFER = 1024
 UI_STEP = 60
+
+# * Sample commands
+# ? POST 2 3 white Meeting next Wednesday from 2 to 3
+# ? SHAKE
+# ? CLEAR
+# ? DISCONNECT
+# ? GET color=<color> contains=<x> <y> refersTo=<substring>
+# ? PIN <x> <y>
+# ? UNPIN <x> <y>
 
 
 def start_client(host, port):
@@ -40,7 +85,7 @@ def start_client(host, port):
         notes.clear()
 
         # Re-fetch data
-        client.sendall("GET".encode('utf-8'))
+        client.sendall("GET None None None None".encode('utf-8'))
         raw = client.recv(BUFFER).decode('utf-8')
         boardNotes = json.loads(raw)
 
@@ -77,7 +122,11 @@ def start_client(host, port):
         elif (disconnectButton.clicked(x)):
             client.sendall('DISCONNECT'.encode('utf-8'))
             #! Safe exit, need to make sure we close the thread !
-            pass
+
+            # * We can safely close the UI
+            win.close()
+            print('Closing the GUI....')
+            return
         elif toggleButton.clicked(x):
             mode = "PIN" if mode == "NOTE" else "NOTE"
             toggleButton.setText(f"Mode: {mode}")
