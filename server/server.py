@@ -82,7 +82,68 @@ if __name__ == '__main__':
 #Need to add POST, SHAKE, PIN, UNPIN, DISCONNECT, CLEAR, GET
 #How would these be implemented on the server side? 
 
+# ? POST 2 3 white Meeting next Wednesday from 2 to 3
+"""
+Possible implementation 
 
+The server should listen, possibly in a (see main() )
+while (True): 
+    message.split(" ")
+    if (message.lower().startsWith('shake')):
+        handleShake() 
+    elif (message.lower().startsWith('disconnect')):
+        handleDisconnect() 
+    ....
+    
+0"""
 
+# ? SHAKE
+""" 
 
- 
+queueOfNotes = Queue() 
+queueOfPostedNotes = Queue() 
+queueOfPostedNotes should be made empty
+"""
+
+# ? CLEAR
+""" 
+from queue import Queue, Empty 
+
+queueOfNotes = Queue() 
+queueOfPostedNotes = Queue() 
+while True: # this is because queue.empty() is NOT atomic. 
+    try: queueOfNotes.get_nowait() 
+    except Empty: break 
+"""
+
+# ? DISCONNECT
+"""
+Should exit the thread 
+"""
+
+# ? GET color=<color> contains=<x> <y> refersTo=<substring>
+"""
+GET <color> <x> <y> <refersTo>
+
+All arguments are positional and must appear in this order.
+Use 'None' for unused fields.
+
+Examples:
+GET None None None None
+GET red None None None
+GET red 1 2 None
+
+"""
+
+# ? PIN <x> <y>
+""" 
+queueOfPins = Queue() 
+# just add to the queue
+"""
+
+# ? UNPIN <x> <y>
+"""
+queueOfPins = Queue() 
+# just remove from the Pins 
+"""
+
