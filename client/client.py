@@ -41,8 +41,8 @@ class Note(Button):
             self.undraw()
 
 
-DEF_HOST = '127.0.0.1'
-DEF_PORT = 9000
+DEF_HOST = '0.0.0.0'
+DEF_PORT = 5000
 BUFFER = 1024
 UI_STEP = 60
 
