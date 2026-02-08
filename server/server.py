@@ -9,8 +9,8 @@ import argparse
 import sys
 import json
 
-DEF_HOST = ''
-DEF_PORT = 9000
+DEF_HOST = '0.0.0.0'
+DEF_PORT = 5000
 BUFFER = 1024
 BACKLOG = 10
 DEF_COLOUR_SCHEME = 'gold purple'
@@ -22,15 +22,19 @@ def server_ops(client_socket: socket.socket, client_address: tuple, board_width:
     client_ip, client_port = client_address
     #When a client first connects, send handshake data:
     #handshake data set up when the server initializes. 
-    data_to_send = [board_width,board_height,note_height,note_width,colours]
+    print(f"Connection from {client_ip}:{client_port}")
+    data_to_send = [board_width,board_height,note_height,note_width,colours.split()]
     message = json.dumps(data_to_send).encode('utf-8') 
     client_socket.sendall(message)
+    
+
 
     
     
             
 
 def main(host: str,port:int, board_width: int, board_height:int, note_width:int, note_height: int, colours:str):
+    print("ho")
     #Setting up the server: 
     server_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 
@@ -41,9 +45,11 @@ def main(host: str,port:int, board_width: int, board_height:int, note_width:int,
         # Bind and listen
         server_socket.bind((host, port))
         server_socket.listen(BACKLOG)
+        print("Waiting for a connection...")
 
         while True:
             try:
+                print("Waiting for a connection...")
                 client_socket, client_address = server_socket.accept()
                 start_new_thread (server_ops, (client_socket,client_address,board_width,board_height,note_width,note_height,colours))
 
@@ -76,74 +82,6 @@ if __name__ == '__main__':
     parser.add_argument("colours", nargs = "+")
 
     args = parser.parse_args()
-    main(args.host, args.port, args.board_height, args.board_width, args.note_width, args.note_height, args.colours)
+    main(args.host, args.port, args.board_width, args.board_height, args.note_width, args.note_height, args.colours)
 
-
-#Need to add POST, SHAKE, PIN, UNPIN, DISCONNECT, CLEAR, GET
-#How would these be implemented on the server side? 
-
-# ? POST 2 3 white Meeting next Wednesday from 2 to 3
-"""
-Possible implementation 
-
-The server should listen, possibly in a (see main() )
-while (True): 
-    message.split(" ")
-    if (message.lower().startsWith('shake')):
-        handleShake() 
-    elif (message.lower().startsWith('disconnect')):
-        handleDisconnect() 
-    ....
-    
-0"""
-
-# ? SHAKE
-""" 
-
-queueOfNotes = Queue() 
-queueOfPostedNotes = Queue() 
-queueOfPostedNotes should be made empty
-"""
-
-# ? CLEAR
-""" 
-from queue import Queue, Empty 
-
-queueOfNotes = Queue() 
-queueOfPostedNotes = Queue() 
-while True: # this is because queue.empty() is NOT atomic. 
-    try: queueOfNotes.get_nowait() 
-    except Empty: break 
-"""
-
-# ? DISCONNECT
-"""
-Should exit the thread 
-"""
-
-# ? GET color=<color> contains=<x> <y> refersTo=<substring>
-"""
-GET <color> <x> <y> <refersTo>
-
-All arguments are positional and must appear in this order.
-Use 'None' for unused fields.
-
-Examples:
-GET None None None None
-GET red None None None
-GET red 1 2 None
-
-"""
-
-# ? PIN <x> <y>
-""" 
-queueOfPins = Queue() 
-# just add to the queue
-"""
-
-# ? UNPIN <x> <y>
-"""
-queueOfPins = Queue() 
-# just remove from the Pins 
-"""
 
